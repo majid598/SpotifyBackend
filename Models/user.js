@@ -29,6 +29,18 @@ const schema = mongoose.Schema(
         ref: "PlayList",
       },
     ],
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    following: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     pinedPlayLists: [
       {
         type: mongoose.Schema.Types.ObjectId,

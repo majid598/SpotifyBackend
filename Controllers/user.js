@@ -9,7 +9,7 @@ import nodemailer from "nodemailer";
 
 const newUser = TryCatch(async (req, res, next) => {
   const { email, name, password } = req.body;
-  console.log(email, name, password)
+  console.log(email, name, password);
 
   if (!email || !name || !password)
     return next(new ErrorHandler("All Feilds Are Required", 404));
@@ -20,12 +20,7 @@ const newUser = TryCatch(async (req, res, next) => {
     password,
   });
 
-  sendToken(
-    res,
-    user,
-    200,
-    `Account Registration Successful`
-  );
+  sendToken(res, user, 200, `Account Registration Successful`);
 });
 
 const login = TryCatch(async (req, res, next) => {
@@ -90,6 +85,43 @@ const deleteAccount = TryCatch(async (req, res, next) => {
     message: "Account Deleted",
   });
 });
+const getAllUser = TryCatch(async (req, res, next) => {
+  const users = await User.find({});
+
+  return res.status(200).json({
+    success: true,
+    users,
+  });
+});
+const getUser = TryCatch(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  return res.status(200).json({
+    success: true,
+    user,
+  });
+});
+const followUser = TryCatch(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  const me = await User.findById(req.user);
+
+  if (user.followers.indexOf(me._id) === -1) {
+    user.followers.push(me._id);
+  } else {
+    user.followers.splice(user.followers.indexOf(me._id), 1);
+  }
+  if (me.following.indexOf(user._id) === -1) {
+    me.following.push(user._id);
+  } else {
+    me.following.splice(me.following.indexOf(user._id), 1);
+  }
+  await user.save();
+  await me.save();
+  return res.status(200).json({
+    success: true,
+    message: `You Followed ${user.name}`,
+  });
+});
 
 export {
   editProfile,
@@ -99,4 +131,6 @@ export {
   myProfile,
   newUser,
   deleteAccount,
+  getAllUser,
+  getUser,followUser
 };

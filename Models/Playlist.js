@@ -11,6 +11,8 @@ const schema = mongoose.Schema(
     name: String,
     photo: String,
     description: String,
+    folder: { type: Boolean, default: false },
+    folderId: String,
     songs: [
       {
         _id: false,
