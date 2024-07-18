@@ -41,6 +41,17 @@ const schema = mongoose.Schema(
         ref: "User",
       },
     ],
+    role:{
+      type:String,
+      enum:["artist,user"],
+      default:"user"
+    },
+    songs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Song",
+      },
+    ],
     pinedPlayLists: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -12,7 +12,7 @@ import {
   newFolder,
   allFolders,
   newPlayListByFolder,
-  deleteFolder,
+  deleteFolder,folderById,folderPlaylists
 } from "../Controllers/PlayList.js";
 import { isAuthenticated } from "../Middlewares/auth.js";
 const router = express.Router();
@@ -25,6 +25,8 @@ router.get("/my", isAuthenticated, myPlayLists);
 router.get("/my/folders", isAuthenticated, allFolders);
 
 router.get("/get/:id", isAuthenticated, singlePlayList);
+router.get("/folder/:id", isAuthenticated, folderById);
+router.get("/folder/playlists/:id", isAuthenticated, folderPlaylists);
 router.put("/edit/:id", isAuthenticated, editPlayList);
 router.put("/pin/:id", isAuthenticated, pinPlayList);
 router.post("/add-to-playlist/:id", isAuthenticated, addToPlayList);

@@ -132,5 +132,6 @@ export {
   newUser,
   deleteAccount,
   getAllUser,
-  getUser,followUser
+  getUser,
+  followUser,
 };

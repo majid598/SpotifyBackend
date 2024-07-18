@@ -2,11 +2,10 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import session from "express-session";
 import passport from "passport";
 import { errorMiddleware } from "./Middlewares/error.js";
 import { connectDb } from "./Utils/db.js";
-import Stripe from "stripe";
-import session from "express-session";
 const app = express();
 
 dotenv.config({
@@ -18,7 +17,6 @@ app.use(
     secret: "hey",
     resave: false,
     saveUninitialized: false,
-
     cookie: {
       secure: true,
       httpOnly: true,
@@ -47,8 +45,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.enable("trust proxy");
 
-export const stripe = new Stripe(process.env.STRIPE_KEY);
-
 connectPassport();
 
 app.use(cookieParser());
@@ -57,8 +53,8 @@ app.get("/", (req, res) => {
   res.send("Server Is Working Perfectly");
 });
 
-import userRoute from "./Routes/user.js";
 import playListRoute from "./Routes/Playlist.js";
+import userRoute from "./Routes/user.js";
 import { connectPassport } from "./Utils/passport-setup.js";
 
 connectDb(process.env.MONGO_URI);

@@ -66,6 +66,23 @@ const singlePlayList = TryCatch(async (req, res, next) => {
     playList,
   });
 });
+const folderById = TryCatch(async (req, res, next) => {
+  const folder = await Folder.findById(req.params.id);
+  return res.status(200).json({
+    success: true,
+    folder,
+  });
+});
+const folderPlaylists = TryCatch(async (req, res, next) => {
+  const playLists = await PlayList.find({
+    folderId: req.params.id,
+    user: req.user,
+  }).populate("user", "name");
+  return res.status(200).json({
+    success: true,
+    playLists,
+  });
+});
 const editPlayList = TryCatch(async (req, res, next) => {
   const { name, description } = req.body;
   const data = { name, description };
@@ -160,7 +177,7 @@ const newFolder = TryCatch(async (req, res, next) => {
   });
 });
 const allFolders = TryCatch(async (req, res, next) => {
-  const folders = await Folder.find({});
+  const folders = await Folder.find({ user: req.user });
   return res.status(200).json({
     success: true,
     folders,
@@ -177,7 +194,7 @@ const moveToFolder = TryCatch(async (req, res, next) => {
   await playlist.save();
   return res.status(200).json({
     success: true,
-    message:"Playlist added into folder",
+    message: "Playlist added into folder",
   });
 });
 
@@ -195,4 +212,6 @@ export {
   newFolder,
   allFolders,
   deleteFolder,
+  folderById,
+  folderPlaylists,
 };
