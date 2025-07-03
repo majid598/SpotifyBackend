@@ -41,10 +41,10 @@ const schema = mongoose.Schema(
         ref: "User",
       },
     ],
-    role:{
-      type:String,
-      enum:["artist,user"],
-      default:"user"
+    role: {
+      type: String,
+      enum: ["user", "artist"],
+      default: "user",
     },
     songs: [
       {
